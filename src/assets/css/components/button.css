@@ -1,11 +1,11 @@
 .btn {
-  @apply relative inline-flex justify-center rounded-lg text-sm font-medium;
+  @apply relative inline-flex items-center justify-between rounded-lg text-sm font-medium;
 
   &-filled {
     @apply px-5 py-2.5;
 
     &.btn-primary {
-      @apply bg-gradient-to-r from-blue-600 to-purple-400 text-white hover:bg-gradient-to-tr;
+      @apply bg-gradient-to-r from-red-600 to-orange-400 text-white hover:bg-gradient-to-tr;
     }
 
     &.btn-secondary {
