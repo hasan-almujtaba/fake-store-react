@@ -1,13 +1,14 @@
-const componentLocation = 'src/components/'
-const componentType = {
-  layout: 'layouts',
-  element: 'elements/{{ name }}',
-  custom: '{{ folder }}',
-}
+import {
+  componentDir,
+  featureDir,
+  features,
+  templateDir,
+} from '../data/index.js'
+import { componentTemplate, componentPath } from '../utils/index.js'
 
 /** @type {import('plop').PlopGenerator} */
 export const componentConfig = {
-  description: 'Generate new global component',
+  description: 'Generate new component',
   prompts: [
     {
       type: 'input',
@@ -16,75 +17,86 @@ export const componentConfig = {
     },
     {
       type: 'list',
-      name: 'type',
-      message: 'Component type?',
-      choices: ['layout', 'element', 'custom'],
+      name: 'feature',
+      message: 'Which feature?',
+      choices: ['global', ...features, 'new feature'],
+    },
+    {
+      type: 'input',
+      name: 'newFeature',
+      message: 'Feature name?',
+      when: (data) => data.feature === 'new feature',
+    },
+    {
+      type: 'list',
+      name: 'folder',
+      message: 'Component folder location? (Optional)',
+      choices: (data) => ['layouts', 'elements', data.name, 'new folder'],
+      when: (data) => data.feature === 'global',
+      default: (data) => data.name,
+    },
+    {
+      type: 'input',
+      name: 'newFolder',
+      message: 'Folder name?',
+      when: (data) => data.folder === 'new folder',
     },
     {
       type: 'confirm',
       name: 'hasTest',
       message: 'Generate test file?',
-      when: (data) => data.type !== 'layout',
-    },
-    {
-      type: 'input',
-      name: 'folder',
-      message: 'Component folder? (Optional)',
-      when: (data) => data.type === 'custom',
-      default: (data) => data.name,
+      when: (data) => data.folder !== 'layout',
     },
   ],
   actions: (data) => {
-    const componentPath = `${componentLocation + componentType[data.type]}/`
-
     /** @type {import('plop').PlopGeneratorConfig['actions']} */
-    const actions = []
+    const actions = [
+      {
+        type: `add`,
+        path: componentPath(data),
+        templateFile: componentTemplate(data),
+      },
+    ]
 
-    if (data.type === 'layout') {
-      actions.push(
-        {
-          type: 'modify',
-          path: `${componentLocation}/layouts/index.ts`,
-          pattern: /(\/\/ COMPONENT EXPORTS)/g,
-          templateFile: 'generators/templates/component-entry.hbs',
-        },
-        {
-          type: 'add',
-          path: `${componentPath}/{{ name }}.tsx`,
-          templateFile: 'generators/templates/component.hbs',
-        }
-      )
-    }
-
-    if (data.type === 'element') {
+    if (data.newFeature) {
       actions.push({
-        type: 'modify',
-        path: `${componentLocation}/elements/index.ts`,
-        pattern: /(\/\/ COMPONENT EXPORTS)/g,
-        templateFile: 'generators/templates/component-entry.hbs',
+        type: 'add',
+        path: `${featureDir}/{{ newFeature }}/components/index.ts`,
+        templateFile: `${templateDir}/component-entry.hbs`,
       })
     }
 
-    if (data.type === 'element' || data.type === 'custom') {
-      actions.push(
-        {
-          type: 'add',
-          path: `${componentPath}/index.tsx`,
-          templateFile: 'generators/templates/component.hbs',
-        },
-        {
-          type: 'add',
-          path: `${componentPath}/type.ts`,
-          templateFile: 'generators/templates/component-type.hbs',
-        }
-      )
+    if (!data.newFeature && data.feature !== 'global') {
+      actions.push({
+        type: 'modify',
+        path: `${featureDir}/{{ kebabCase feature }}/components/index.ts`,
+        pattern: /(\/\/ COMPONENT EXPORTS)/g,
+        templateFile: `${templateDir}/component-entry.hbs`,
+      })
+    }
+
+    if (data.folder === 'layouts' || data.folder === 'elements') {
+      actions.push({
+        type: 'modify',
+        path: `${componentDir}/{{ folder }}/index.ts`,
+        pattern: /(\/\/ COMPONENT EXPORTS)/g,
+        templateFile: `${templateDir}/component-entry.hbs`,
+      })
+    }
+
+    if (data.folder !== 'layouts') {
+      actions.push({
+        type: 'add',
+        path: componentPath(data, 'type'),
+        templateFile: `${templateDir}/component-type.hbs`,
+      })
     }
 
     if (data.hasTest) {
       actions.push({
         type: 'add',
-        path: `${componentPath}/index.test.tsx`,
-        templateFile: 'generators/templates/component-test.hbs',
+        path: componentPath(data, 'test'),
+        templateFile: `${templateDir}/component-test.hbs`,
       })
     }
 
