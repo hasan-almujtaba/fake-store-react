@@ -11,6 +11,10 @@
     &.btn-secondary {
       @apply bg-gradient-to-r from-pink-600 to-orange-400 text-white hover:bg-gradient-to-tr;
     }
+
+    &.btn-neutral {
+      @apply bg-white text-black hover:bg-gray-200;
+    }
   }
 
   &-outlined {

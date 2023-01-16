@@ -7,7 +7,7 @@ import { PolymorphicComponentPropWithRef } from '~/types'
  */
 type Props = {
   variant?: 'filled' | 'outlined'
-  colorScheme?: 'primary' | 'secondary'
+  colorScheme?: 'primary' | 'secondary' | 'neutral'
 }
 
 /**
