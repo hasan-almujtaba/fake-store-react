@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@fontsource/poppins': ^4.5.10
   '@headlessui/react': ^1.7.7
   '@tanstack/react-query': ^4.20.4
   '@tanstack/react-query-devtools': ^4.20.4
@@ -44,6 +45,7 @@ specifiers:
   zustand: ^4.1.5
 
 dependencies:
+  '@fontsource/poppins': 4.5.10
   '@tanstack/react-query': 4.20.4_biqbaboplfbrettd7655fr4n2y
   '@tanstack/react-query-devtools': 4.20.4_fu3ixcwltlssi3ozitelgaebme
   axios: 1.2.2
@@ -551,6 +553,10 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@fontsource/poppins/4.5.10:
+    resolution: {integrity: sha512-oYZVHsnlwV3VWM1SE/m6SUxVh0QLk5+2wB+lBiXcI7N/0KVQWmV9YykaPqfJHBLvmdya+MAOnv+BQHeLU1vOOw==}
+    dev: false
 
   /@headlessui/react/1.7.7_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-BqDOd/tB9u2tA0T3Z0fn18ktw+KbVwMnkxxsGPIH2hzssrQhKB5n/6StZOyvLYP/FsYtvuXfi9I0YowKPv2c1w==}
