@@ -1,9 +1,11 @@
-import { Link, useLocation } from 'react-router-dom'
-import { MdMenu, MdClose, MdLogin } from 'react-icons/md'
 import { Disclosure } from '@headlessui/react'
-import { Button } from '../elements'
-import { navigation } from './data'
 import clsx from 'clsx'
+import { MdMenu, MdClose, MdLogin } from 'react-icons/md'
+import { Link, useLocation } from 'react-router-dom'
+
+import { Button } from '../elements'
+
+import { navigation } from './data'
 
 export const Navbar = () => {
   const { pathname } = useLocation()
